@@ -17,9 +17,42 @@ app.use(express.static(publicPath));
 functionname: io.on()
 Purpose: registers an event listener  
 param 1: connection event listens to a connection
-param 2: Callback funktion with socket response object*/
+param 2: Data packed in an object */
 io.on("connection", (socket)=>{
     console.log("New user connected");
+
+    /*
+    functionname: socket.emit()
+    Purpose: emits events  to the client
+    param 1: Eventname
+    param 2: Data packed in an object*/
+    socket.emit("newEmail", {
+            from: "Jonny@exm.de",
+            text: "Whats going on.",
+            createdAt: new Date().toString()
+        });
+    
+    socket.emit("newMessage", {
+            from: "Laura",
+            text: "Hello how are you",
+            createdAt: new Date().toString()
+        });
+    
+    /*
+    functionname: socket.on()
+    Purpose: listens on event from the client
+    param 1: Eventname
+    param 2: Data packed in an object received by the client */
+    socket.on("createEmail", (newEmail)=>{
+       console.log("New email received from client: ", newEmail); 
+    });
+    
+    
+    socket.on("createMessage", (message)=>{
+        message.createdAt  = new Date().toString();
+       console.log("New message received: ", message); 
+    });
+    
     
     socket.on("disconnect", ()=>{
        console.log("User was disconnected"); 
