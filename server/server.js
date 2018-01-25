@@ -1,25 +1,32 @@
 const path = require("path");
 const express = require("express");
+const socketIO = require("socket.io");
+
+var http = require('http');
 
 const publicPath = path.join(__dirname, '/../public');
 const port = process.env.PORT || 3000;
 
-//__dirname current directory
-//console.log("DIRECTORY: "+__dirname+'/../public');
-//console.log("PUBLIC PATH: "+publicPath);
-
 var app = express();
+var server = http.createServer(app);
+var io = socketIO(server);
 
 /* Konfiguration von der express Middleware */
 app.use(express.static(publicPath));
 
 
+
+
+
+//__dirname current directory
+//console.log("DIRECTORY: "+__dirname+'/../public');
+//console.log("PUBLIC PATH: "+publicPath);
+
+
 //
-app.listen(3000, ()=>{
+server.listen(3000, ()=>{
    console.log(`Server is up on ${port}`); 
 });
 
 
 
-git remote add origin https://github.com/dubiBerlin/nodejs-chat-app.git
-git push -u origin master
