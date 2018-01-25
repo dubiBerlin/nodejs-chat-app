@@ -50,7 +50,19 @@ io.on("connection", (socket)=>{
     
     socket.on("createMessage", (message)=>{
         message.createdAt  = new Date().toString();
-       console.log("New message received: ", message); 
+        console.log("New message received: ", message); 
+        
+        /*
+        functionname: io.emit()
+        Purpose: sends events to all connections
+        param 1: Eventname
+        param 2: Data packed in an object received by the client */
+        io.emit("newMessage", {
+            from: message.from, 
+            text: message.text,
+            createdAt: message.createdAt
+        });
+        
     });
     
     
