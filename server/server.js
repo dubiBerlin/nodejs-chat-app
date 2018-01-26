@@ -21,6 +21,18 @@ param 2: Data packed in an object */
 io.on("connection", (socket)=>{
     console.log("New user connected");
 
+    socket.emit("newMessage",{
+       from : "Admin",
+        text: "Welcome to the chat app",
+        createdAt: new Date().getTime()
+    });
+    
+    socket.broadcast.emit("newMessage",{
+        from : "Admin",
+        text: "New user joined",
+        createdAt: new Date().getTime()
+    });
+    
     /*
     functionname: socket.emit()
     Purpose: emits events  to the client
@@ -49,7 +61,7 @@ io.on("connection", (socket)=>{
     
     
     socket.on("createMessage", (message)=>{
-        message.createdAt  = new Date().toString();
+        message.createdAt  = new Date().getTime().toString();
         console.log("New message received: ", message); 
         
         /*
@@ -57,12 +69,18 @@ io.on("connection", (socket)=>{
         Purpose: sends events to all connections
         param 1: Eventname
         param 2: Data packed in an object received by the client */
-        io.emit("newMessage", {
+//        io.emit("newMessage", {
+//            from: message.from, 
+//            text: message.text,
+//            createdAt: message.createdAt
+//        });
+        
+        
+        socket.broadcast.emit("newMessage", {
             from: message.from, 
             text: message.text,
             createdAt: message.createdAt
         });
-        
     });
     
     
